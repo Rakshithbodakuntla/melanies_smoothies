@@ -32,5 +32,5 @@ if time_to_insert:
         session.sql(insert_sql, params=[ingredients_string, name_on_order]).collect()
         st.success("Your Smoothie is ordered!", icon="✅")
 import requests  
-smoothiefroot_response = requests.get("[https://my.smoothiefroot.com/api/fruit/watermelon](https://my.smoothiefroot.com/api/fruit/watermelon)")  
+smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")  
 st.text(smoothiefroot_response)
