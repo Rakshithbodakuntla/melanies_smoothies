@@ -8,9 +8,10 @@ st.write("Choose the fruits you want in your custom smoothie!")
 name_on_order = st.text_input("Name on Smoothie:")
 cnx = st.connection("snowflake")
 session = cnx.session()
+st.write("The name on the order will be:",name_on_order)
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'),col('SEARCH_ON'))
 st.dataframe(data= my_dataframe, use_container_width = True)
-st.write(name_on_order)
+
 st.stop()
 
 fruit_rows = session.table("smoothies.public.fruit_options").select(col("FRUIT_NAME")).collect()
