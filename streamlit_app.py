@@ -34,15 +34,11 @@ if time_to_insert:
 import requests  
 if ingredients_list:
     ingredients_string=''
-    for fruit_chosen in ingredients_list:
-        ingredients_string += fruit_chosen +''
-        st.subheader(fruit_chosen + ' Nutrition Information')
-        url = f"https://my.smoothiefroot.com/api/fruit/{fruit_chosen}"
-        smoothiefroot_response = requests.get(url)
-        if smoothiefroot_response.status_code == 200:
-        st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
-    else:
-        st.error(f"Failed to fetch data for {fruit_chosen}")
+    for fruit_chosen in ingredients_list: 
+        ingredients_string += fruit_chosen +'' 
+        st.subheader(fruit_chosen + ' Nutrition Information') 
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/{fruit_chosen}") 
+        sf_df = st.dataframe(data= smoothiefroot_response.json(), use_container_width= True) 
 smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")  
 #st.text(smoothiefroot_response.json())
 sf_df = st.dataframe(data= smoothiefroot_response.json(), use_container_width= True)
