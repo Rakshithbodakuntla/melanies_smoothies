@@ -10,8 +10,11 @@ cnx = st.connection("snowflake")
 session = cnx.session()
 st.write("The name on the order will be:",name_on_order)
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'),col('SEARCH_ON'))
-st.dataframe(data= my_dataframe, use_container_width = True)
+#st.dataframe(data= my_dataframe, use_container_width = True)
 
+#st.stop()
+pd_df = my_dataframe.to_pandas()
+st.dataframe(pd_df)
 st.stop()
 
 fruit_rows = session.table("smoothies.public.fruit_options").select(col("FRUIT_NAME")).collect()
