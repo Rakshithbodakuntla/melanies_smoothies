@@ -40,8 +40,7 @@ if ingredients_list:
         url = f"https://my.smoothiefroot.com/api/fruit/{fruit_chosen}"
         smoothiefroot_response = requests.get(url)
         if smoothiefroot_response.status_code == 200:
-        data = smoothiefroot_response.json()
-        st.dataframe(data=data, use_container_width=True)
+        st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
     else:
         st.error(f"Failed to fetch data for {fruit_chosen}")
 smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")  
