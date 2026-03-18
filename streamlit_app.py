@@ -1,14 +1,14 @@
 import streamlit as st
 import requests
 from snowflake.snowpark.functions import col
-from snowflake.snowpark.context import get_active_session
+
 
 st.title(":cup_with_straw: Customize Your Smoothie :cup_with_straw:")
 st.write("Choose the fruits you want in your custom smoothie!")
 
 name_on_order = st.text_input("Name on Smoothie:")
-
-session = get_active_session()
+cnx = st.connection("snowflake")
+session = cnx.session()
 
 st.write("The name on the order will be:", name_on_order)
 
