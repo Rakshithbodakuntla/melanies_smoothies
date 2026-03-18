@@ -1,14 +1,15 @@
 import streamlit as st
 import requests
 from snowflake.snowpark.functions import col
-from snowflake.snowpark.context import get_active_session
+
 
 st.title(":cup_with_straw: Customize Your Smoothie :cup_with_straw:")
 st.write("Choose the fruits you want in your custom smoothie!")
 
 name_on_order = st.text_input("Name on Smoothie:")
 
-session = get_active_session()
+cnx = st.connection("snowflake")
+session = cnx.session()
 
 st.write("The name on the order will be:", name_on_order)
 
@@ -26,12 +27,17 @@ ingredients_list = st.multiselect(
 )
 
 if ingredients_list:
+    ingredients_string = ""
+
     for fruit_chosen in ingredients_list:
+        ingredients_string += fruit_chosen + ", "
+
         search_on = pd_df.loc[
             pd_df["FRUIT_NAME"] == fruit_chosen, "SEARCH_ON"
         ].iloc[0]
 
         st.write("The search value for", fruit_chosen, "is", search_on)
+
         st.subheader(f"{fruit_chosen} Nutrition Information")
 
         smoothiefroot_response = requests.get(
@@ -64,3 +70,14 @@ if time_to_insert:
         session.sql(insert_sql, params=[ingredients_string, name_on_order]).collect()
 
         st.success(f"Your Smoothie is ordered for {name_on_order}!", icon="✅")
+# Optional fixed example call
+smoothiefroot_response = requests.get(
+    "https://my.smoothiefroot.com/api/fruit/watermelon"
+)
+
+if smoothiefroot_response.status_code == 200:
+    st.text(str(smoothiefroot_response.json()))
+    st.dataframe(
+        data=smoothiefroot_response.json(),
+        use_container_width=True
+    )
