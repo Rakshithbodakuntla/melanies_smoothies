@@ -33,7 +33,9 @@ if time_to_insert:
     elif not ingredients_list:
         st.error("Please choose at least one ingredient.")
     else:
-        ingredients_string = ", ".join(ingredients_list)
+        ingredients_string = ""
+        for fruit_chosen in ingredients_list:
+            ingredients_string += fruit_chosen + ""
 
         insert_sql = """
             INSERT INTO smoothies.public.orders (ingredients, name_on_order)
