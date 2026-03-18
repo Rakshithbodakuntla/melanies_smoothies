@@ -25,6 +25,24 @@ ingredients_list = st.multiselect(
     pd_df["FRUIT_NAME"].tolist(),
     max_selections=5
 )
+time_to_insert = st.button("Submit Order")
+
+if time_to_insert:
+    if not name_on_order:
+        st.error("Please enter a name.")
+    elif not ingredients_list:
+        st.error("Please choose at least one ingredient.")
+    else:
+        ingredients_string = ", ".join(ingredients_list)
+
+        insert_sql = """
+            INSERT INTO smoothies.public.orders (ingredients, name_on_order)
+            VALUES (?, ?)
+        """
+
+        session.sql(insert_sql, params=[ingredients_string, name_on_order]).collect()
+
+        st.success(f"Your Smoothie is ordered for {name_on_order}!", icon="✅")
 
 if ingredients_list:
     ingredients_string = ""
@@ -52,24 +70,7 @@ if ingredients_list:
         else:
             st.error(f"Failed to fetch data for {fruit_chosen}")
 
-time_to_insert = st.button("Submit Order")
 
-if time_to_insert:
-    if not name_on_order:
-        st.error("Please enter a name.")
-    elif not ingredients_list:
-        st.error("Please choose at least one ingredient.")
-    else:
-        ingredients_string = ", ".join(ingredients_list)
-
-        insert_sql = """
-            INSERT INTO smoothies.public.orders (ingredients, name_on_order)
-            VALUES (?, ?)
-        """
-
-        session.sql(insert_sql, params=[ingredients_string, name_on_order]).collect()
-
-        st.success(f"Your Smoothie is ordered for {name_on_order}!", icon="✅")
 # Optional fixed example call
 smoothiefroot_response = requests.get(
     "https://my.smoothiefroot.com/api/fruit/watermelon"
